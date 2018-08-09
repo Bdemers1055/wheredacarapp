@@ -28,8 +28,8 @@ const errorHandler = require('./middlewares/errorHandler');
 const notFoundHandler = require('./middlewares/404');
 
 //routes
-server.use(userRouter);
-server.use(locationRouter);
+server.use('/api', userRouter);
+server.use('/api', locationRouter);
 
 server.use(notFoundHandler);
 server.use(errorHandler);

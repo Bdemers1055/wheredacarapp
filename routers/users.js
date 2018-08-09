@@ -20,21 +20,21 @@ router.get('/users', async (req, res, next) => {
 
 
 // get user by id
-router.get('/users/:id', async (req, res, next) => {
-    const { id } = req.params; 
-    try {
-        const users = await User.find({ _id: id });
-        res.status(200).json({
-            users: users
-        });
-    }
-    catch(err) {
-        next(err);
-    }
-});
+// router.get('/users/:id', async (req, res, next) => {
+//     const { id } = req.params; 
+//     try {
+//         const users = await User.find({ _id: id });
+//         res.status(200).json({
+//             users: users
+//         });
+//     }
+//     catch(err) {
+//         next(err);
+//     }
+// });
 
-// create new user
-router.post('/users/', async (req, res, next) => {
+// signup new user 
+router.post('/signup/', async (req, res, next) => {
     const { name, email } = req.body;
     try {
         const user = new User({ name, email });
@@ -44,26 +44,18 @@ router.post('/users/', async (req, res, next) => {
             user
         });
     } catch (error) {
-        // next(err);
-        res.status(500).json({
-            msg: 'user not created'
-        });
+        next(err);
     }
 });
 
-//update user by id
-router.put('/users/:id', async (req, res, next) => {
-    const { id } = req.params;
-    const { name, email } = req.body;
-    try {
-        const updatedUser = await User.findByIdAndUpdate( id, { name, email }, { new: true });
-        res.status(200).json({
-            msg: 'update successful',
-            pet: updatedUser
-        });
-    } catch(err) {
-        next(err);
-    }
+//login user by id
+router.post('/users/:id', (req, res) => {
+    res.send('user logged in');
+});
+
+//logout user by id
+router.get('/users/:id', (req, res) => {
+    res.send('user logged out');
 });
 
 //delete user by id

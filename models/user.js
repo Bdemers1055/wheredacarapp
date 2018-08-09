@@ -12,6 +12,14 @@ const userSchema = new Schema({ // userSchem is a variable name
         type: String,
         required: true,
     },
+    hash: {
+        type: String
+        // required: true,
+    },
+    salt: {
+        type: String
+        // required: true,
+    },
 });
 
 const User = mongoose.model('User', userSchema);

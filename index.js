@@ -23,9 +23,14 @@ server.use(helmet());
 server.use(morgan("combined")); //status logging
 server.use(bodyParser.json()); //accept json data
 server.use(bodyParser.urlencoded({ extended: true })); //accept html form data 
+const errorHandler = require('./middlewares/errorHandler');
+const notFoundHandler = require('./middlewares/404');
 
 //routes
 server.use(userRouter);
+
+server.use(notFoundHandler);
+server.use(errorHandler);
 
 // kick it off
 server.listen(port, () => {

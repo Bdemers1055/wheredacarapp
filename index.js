@@ -17,6 +17,7 @@ const port = process.env.PORT || 2004;
 
 //routers
 const userRouter = require('./routers/users');
+const locationRouter = require('./routers/locations');
 
 //power-ups, middlewares
 server.use(helmet());
@@ -28,6 +29,7 @@ const notFoundHandler = require('./middlewares/404');
 
 //routes
 server.use(userRouter);
+server.use(locationRouter);
 
 server.use(notFoundHandler);
 server.use(errorHandler);

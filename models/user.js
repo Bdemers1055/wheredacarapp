@@ -20,6 +20,9 @@ const userSchema = new Schema({ // userSchem is a variable name
         type: String
         // required: true,
     },
+    location: {
+        type: Schema.Types.ObjectId
+    }
 });
 
 const User = mongoose.model('User', userSchema);

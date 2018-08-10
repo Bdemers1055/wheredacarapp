@@ -39,16 +39,14 @@ router.post('/signup/', async (req, res, next) => {
     if(!email || !password) {
         next({ msg: "You have not submitted an email and password", status: 400 });
     }
-    // try {
-    //     const user = new User({ name, email });
-    //     await user.save();
-    //     res.status(201).json({
-    //         msg: 'created new user',
-    //         user
-    //     });
-    // } catch (error) {
-    //     next(err);
-    // }
+    try {
+        const user = new User({ email });
+        user.SetPassword(password);
+        await user.save();
+        res.redirect('/login');
+    } catch (error) {
+        next(err);
+    }
 });
 
 //login user by id

@@ -35,17 +35,20 @@ router.get('/users', async (req, res, next) => {
 
 // signup new user 
 router.post('/signup/', async (req, res, next) => {
-    const { name, email } = req.body;
-    try {
-        const user = new User({ name, email });
-        await user.save();
-        res.status(201).json({
-            msg: 'created new user',
-            user
-        });
-    } catch (error) {
-        next(err);
+    const { email, password } = req.body;
+    if(!email || !password) {
+        next({ msg: "You have not submitted an email and password", status: 400 });
     }
+    // try {
+    //     const user = new User({ name, email });
+    //     await user.save();
+    //     res.status(201).json({
+    //         msg: 'created new user',
+    //         user
+    //     });
+    // } catch (error) {
+    //     next(err);
+    // }
 });
 
 //login user by id

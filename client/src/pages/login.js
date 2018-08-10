@@ -12,6 +12,7 @@ class Login extends Component {
                     type="text"
                     placeholder="password" />
                 <button type="button" className="loginBtn">LOGIN</button>
+                <a href="/signup">Sign up</a>
         </div>
       );
     }

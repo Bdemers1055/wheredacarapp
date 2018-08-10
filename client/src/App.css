@@ -80,6 +80,16 @@ input:focus {
   border: none;
   background-color: teal;
 }
+.loginBtn a {
+  color: white;
+  text-decoration: none;
+}
+
+/* .outlined {
+  border: solid 1px teal;
+  color: teal;
+  background: lightgray;
+} */
 
 button:hover {
   transition: ease-in-out, .2s;

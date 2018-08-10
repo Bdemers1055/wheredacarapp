@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 // import logo from './logo.svg';
 import './App.css';
-import Login from './components/login';
+import Login from './pages/login';
+import Signup from './pages/signup';
+import Home from './pages/home';
+import Find from './pages/find';
+import Park from './pages/park';
+
 
 class App extends Component {
   render() {
@@ -13,6 +18,10 @@ class App extends Component {
         </header>
         <div className="formContainer">
         <Login />
+        <Signup />
+        <Home />
+        <Find />
+        <Park />
         </div>
       </div>
     );

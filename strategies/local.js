@@ -1,24 +1,23 @@
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('../models/user');
 const configuration = {
-    usernameField: 'email'
+    usernameField: 'email',
+    session: false
 };
 
-const handler = async function localHandler(email, password, done){
-    try {
-        const user = await User.find({ email: email });
+const handler = function localHandler(email, password, done){
+    User.findOne({email: email})
+    .then(user => {
         if(!user) {
-            done(null, false);
+        return done (null, false);
         }
-        // things need to change
-        if(user.password !== password){
-            done(null, false);
+        if(!user.isValidPassword(password)){
+        return done(null, false);
         }
-        // this will prob change
-        done(null, user);
-    } catch (error) {
-        done(error);
-    }
+        const token = user.generateJWT();
+        return done(null, user, { token });
+    })
+    .catch(done);
 };
 const Strategy = new LocalStrategy(configuration, handler);
 

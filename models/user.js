@@ -1,6 +1,7 @@
 const mongoose = require ('mongoose');
 const Schema = mongoose.Schema; // Schema class
 const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
 
 const userSchema = new Schema({ // userSchem is a variable name
     email: {
@@ -9,10 +10,10 @@ const userSchema = new Schema({ // userSchem is a variable name
         unique: true,
         maxlength: 64
     },
-    name: {
-        type: String,
-        required: true,
-    },
+    // name: {
+    //     type: String,
+    //     required: true,
+    // },
     hash: {
         type: String,
         required: true
@@ -32,6 +33,22 @@ userSchema.methods.setPassword = function setPassword(password){
                         .toString('hex');
     this.salt = salt;
     this.hash = hash;
+}
+
+userSchema.methods.isValidPassword = function isValidPassword(password){
+    const possibleHash = crypto.pbkdf2Sync(password, this.salt, 100000, 64, 'sha512')
+                                .toString('hex');
+    return this.hash === possibleHash;
+}
+
+userSchema.methods.generateJWT = function generateJWT(){
+    const payload = {
+        id: this._id,
+        email: this.email,
+        expiration: new Date()
+    };
+ const token = jwt.sign(payload, process.env.SECRET);
+ return token;
 }
 
 const User = mongoose.model('User', userSchema);

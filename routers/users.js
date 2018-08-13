@@ -14,7 +14,7 @@ router.get('/users', async (req, res, next) => {
         });
     } 
     catch(err) {
-        next(err);
+        next({err});
     }
 });
 
@@ -58,7 +58,7 @@ passport.authenticate('local', { failureRedirect: './login', session: false}),
             token: req.authInfo.token
     })
     } else {
-        next({ msg: 'unauthorized', status: 401 });
+        next({ msg: 'Either username or password is incorrect', status: 400 });
     }
 });
 
@@ -67,18 +67,35 @@ router.get('/logout', (req, res) => {
     res.send('user logged out');
 });
 
-//delete user by id
-router.delete('/users/:id', async (req, res, next) => {
-    const { id } = req.params; 
+const jwt = require('jsonwebtoken');
+function auth(req, res, next) {
+    console.log(req.headers);
+    const tokenWithBearer = req.headers.authorization;
+    if(!tokenWithBearer) {
+        next({ msg: 'Unauthorized', status: 401 });
+    }
+    const isValid = tokenWithBearer.includes('Bearer');
+    // is token formatted correctly
+    if(!isValid) {
+        next({ msg: 'Unauthorized', status: 401 });
+    }
+    // this removes bearer in front of token
+    const token = tokenWithBearer.slice(7)
     try {
-        await User.findByIdAndRemove(id);
-        res.status(200).json({
-            msg: 'yay deleted!'
-        });
+        console.log(token);
+        const payload = jwt.verify(token, process.env.SECRET);
+        console.log(payload);        
+        req.email = payload.email;
+        req.id = payload.id;
+        next();
+    } catch (error) {
+        next({ msg: 'Unauthorized', status: 401 });        
     }
-    catch(err) {
-            next(err);
-    }
+}
+
+//delete user for a given username(email)
+router.delete('/users/:email', auth, async (req, res, next) => {
+    res.send(`Deleting user with email ${req.params.email}`);
 });
 
 module.exports = router;

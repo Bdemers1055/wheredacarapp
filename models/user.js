@@ -2,6 +2,7 @@ const mongoose = require ('mongoose');
 const Schema = mongoose.Schema; // Schema class
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
+const moment = require('moment');
 
 const userSchema = new Schema({ // userSchem is a variable name
     email: {
@@ -45,7 +46,7 @@ userSchema.methods.generateJWT = function generateJWT(){
     const payload = {
         id: this._id,
         email: this.email,
-        expiration: new Date()
+        exp: moment().add(24, 'hours').toDate().getTime(),
     };
  const token = jwt.sign(payload, process.env.SECRET);
  return token;

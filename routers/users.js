@@ -18,21 +18,6 @@ router.get('/users', async (req, res, next) => {
     }
 });
 
-
-// get user by id
-// router.get('/users/:id', async (req, res, next) => {
-//     const { id } = req.params; 
-//     try {
-//         const users = await User.find({ _id: id });
-//         res.status(200).json({
-//             users: users
-//         });
-//     }
-//     catch(err) {
-//         next(err);
-//     }
-// });
-
 // signup new user 
 router.post('/signup/', async (req, res, next) => {
     const { email, password } = req.body;
@@ -68,7 +53,9 @@ router.get('/logout', (req, res) => {
 });
 
 //delete user for a given username(email)
+// TODO: You need to implement this.
 router.delete('/users/:email', auth, async (req, res, next) => {
+    // you should check req.email is the same as req.params.email, if they then delete, if not error.
     res.send(`Deleting user with email ${req.params.email}`);
 });
 

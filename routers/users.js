@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router(); // tiny lego brick
 const User = require('../models/user');
 const passport = require('passport');
-
+const auth = require('../middlewares/auth');
 //routes 
 
 //get all users
@@ -66,32 +66,6 @@ passport.authenticate('local', { failureRedirect: './login', session: false}),
 router.get('/logout', (req, res) => {
     res.send('user logged out');
 });
-
-const jwt = require('jsonwebtoken');
-function auth(req, res, next) {
-    console.log(req.headers);
-    const tokenWithBearer = req.headers.authorization;
-    if(!tokenWithBearer) {
-        next({ msg: 'Unauthorized', status: 401 });
-    }
-    const isValid = tokenWithBearer.includes('Bearer');
-    // is token formatted correctly
-    if(!isValid) {
-        next({ msg: 'Unauthorized', status: 401 });
-    }
-    // this removes bearer in front of token
-    const token = tokenWithBearer.slice(7)
-    try {
-        console.log(token);
-        const payload = jwt.verify(token, process.env.SECRET);
-        console.log(payload);        
-        req.email = payload.email;
-        req.id = payload.id;
-        next();
-    } catch (error) {
-        next({ msg: 'Unauthorized', status: 401 });        
-    }
-}
 
 //delete user for a given username(email)
 router.delete('/users/:email', auth, async (req, res, next) => {

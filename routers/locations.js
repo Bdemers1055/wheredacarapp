@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router(); // tiny lego brick
 const Location = require('../models/location');
+const auth = require('../middlewares/auth');
 
-
-//routes 
+router.use(auth); //protects all routes
+const location = require('../models/location');
+// setup location routes
 
 //get all locations
 router.get('/locations', async (req, res, next) => {

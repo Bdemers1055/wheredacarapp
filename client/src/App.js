@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-// import logo from './logo.svg';
 import './App.css';
 import { Route, Redirect, Switch } from 'react-router-dom';
+import PrivateRoute from './components/PrivateRoute';
 import Login from './pages/login';
 import Signup from './pages/signup';
 import Home from './pages/home';
 import Find from './pages/find';
 import Park from './pages/park';
-// import Redirect from '../node_modules/react-router-dom/Redirect';
 
 
 class App extends Component {
@@ -19,11 +18,11 @@ class App extends Component {
         </header>
         <div className="formContainer">
         <Switch>
-          <Route exact path ="/" component={Home} />
+          <PrivateRoute exact path ="/" component={Home} />
           <Route path ="/login" component={Login} />
           <Route path ="/signup" component={Signup} />
-          <Route path ="/park" component={Park} />
-          <Route path ="/find" component={Find} />
+          <PrivateRoute path ="/park" component={Park} />
+          <PrivateRoute path ="/find" component={Find} />
           <Redirect to="/" />
         </Switch>
         </div>

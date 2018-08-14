@@ -55,7 +55,9 @@ router.get('/logout', (req, res) => {
 //delete user for a given username(email)
 // TODO: You need to implement this.
 router.delete('/users/:email', auth, async (req, res, next) => {
-    // you should check req.email is the same as req.params.email, if they then delete, if not error.
+    // you should check req.email is the same as req.params.email, 
+    // if yes then delete
+    // if not error
     res.send(`Deleting user with email ${req.params.email}`);
 });
 

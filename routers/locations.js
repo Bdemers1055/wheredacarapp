@@ -7,31 +7,45 @@ router.use(auth); //protects all routes
 const location = require('../models/location');
 // setup location routes
 
-//get all locations
+//get a specific location info by user id
 router.get('/locations', async (req, res, next) => {
     try {
-        const locations = await Location.find();
+        const location = await Location.findOne( {user: req.id });
         res.status(200).json({
-            locations: locations
+            location
         });
     } 
-    catch(err) {
-        next(err);
+    catch(error) {
+        next(error);
     }
 });
 
-
-// get location by id
-router.get('/locations', async (req, res, next) => {
-    const { id } = req.params; 
-    try {
-        const locations = await Location.find({ _id: id });
-        res.status(200).json({
-            locations: locations
-        });
+//create a location 
+router.post('/locations', async (req, res, next) =>{
+    const { lat, lon } = req.body;
+    if(!lat || !lon) {
+        next({ msg: 'Need to supply lat and lon', status: 400 })
     }
-    catch(err) {
-        next(err);
+    try {
+        const location = new Location({lat, lon, user: req.id });
+        await location.save();
+        res.status(201).json({
+            msg: 'created a new location'
+        });
+    } catch (error) {
+        next(error);
+    }
+});
+
+// delete location by user id
+router.delete('/locations', async (req, res, next) => {
+    try {
+       await Location.findOneAndRemove({ user: req.id });
+       res.status(200).json({
+           msg: 'successfully deleted'
+       }); 
+    } catch (error) {
+        next(error);
     }
 });
 

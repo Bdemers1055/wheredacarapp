@@ -19,7 +19,7 @@ router.get('/users', async (req, res, next) => {
 });
 
 // signup new user 
-router.post('/signup/', async (req, res, next) => {
+router.post('/signup', async (req, res, next) => {
     const { email, password } = req.body;
     if(!email || !password) {
         next({ msg: "You have not submitted an email and password", status: 400 });

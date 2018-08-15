@@ -28,7 +28,6 @@ router.post('/signup', async (req, res, next) => {
         const user = new User({ email });
         user.setPassword(password);
         await user.save();
-        res.redirect('/login');
     } catch (error) {
         next(error);
     }
@@ -36,7 +35,7 @@ router.post('/signup', async (req, res, next) => {
 
 //login user by id
 router.post('/login', 
-passport.authenticate('local', { failureRedirect: './login', session: false}), 
+passport.authenticate('local', { session: false }), 
     async (req, res) => {
     if(req.isAuthenticated()){
         res.status(200).json({
@@ -45,11 +44,6 @@ passport.authenticate('local', { failureRedirect: './login', session: false}),
     } else {
         next({ msg: 'Either username or password is incorrect', status: 400 });
     }
-});
-
-//logout user by id
-router.get('/logout', (req, res) => {
-    res.send('user logged out');
 });
 
 //delete user for a given username(email)

@@ -22,7 +22,7 @@ router.get('/locations', async (req, res, next) => {
 
 
 // get location by id
-router.get('/locations/:id', async (req, res, next) => {
+router.get('/locations', async (req, res, next) => {
     const { id } = req.params; 
     try {
         const locations = await Location.find({ _id: id });
